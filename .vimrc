@@ -73,8 +73,26 @@ call plug#begin('~/.vim/plugged')
 " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
 Plug 'fatih/vim-go', { 'tag': '*' }
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+Plug 'preservim/nerdtree'
 
 call plug#end()
 
 let g:rustfmt_autosave = 1
+let g:syntastic_rust_checkers = ['cargo']
 let g:go_term_mode = "vsplit"
+autocmd vimenter * NERDTree
+
+augroup Racer
+    autocmd!
+    autocmd FileType rust nmap <buffer> gd         <Plug>(rust-def)
+    autocmd FileType rust nmap <buffer> gs         <Plug>(rust-def-split)
+    autocmd FileType rust nmap <buffer> gx         <Plug>(rust-def-vertical)
+    autocmd FileType rust nmap <buffer> gt         <Plug>(rust-def-tab)
+    autocmd FileType rust nmap <buffer> <leader>gd <Plug>(rust-doc)
+    autocmd FileType rust nmap <buffer> <leader>gD <Plug>(rust-doc-tab)
+augroup END
+
+" 当主窗口关闭时，关闭NERDTree的窗口
+autocmd BufEnter * if 0 == len(filter(range(1, winnr('$')), 'empty(getbufvar(winbufnr(v:val), "&bt"))')) | qa! | endif
+set mouse=r " 鼠标可以复制粘贴
