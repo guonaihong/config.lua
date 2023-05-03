@@ -1,3 +1,7 @@
+--[[
+ THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
+ `lvim` is the global options object
+]]
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -178,10 +182,8 @@ lvim.plugins = {
   -- },
 }
 
--- 左移和右移标签页
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
-require('go').setup()
-require("go.format").goimport()
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "gopls" })
