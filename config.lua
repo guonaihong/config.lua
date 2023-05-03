@@ -1,96 +1,32 @@
---[[
-lvim is the global options object
-
-Linters should be
-filled in as strings with either
-a global executable or a path to
-an executable
-]]
--- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
+-- vim options
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.relativenumber = true
 
 -- general
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_assume_mapped = true
-vim.g.copilot_tab_fallback = ""
-local cmp = require "cmp"
--- lvim.builtin.cmp.mapping["<C-e>"] = function(fallback)
---   cmp.mapping.abort()
---   local copilot_keys = vim.fn["copilot#Accept"]()
---   if copilot_keys ~= "" then
---     vim.api.nvim_feedkeys(copilot_keys, "i", true)
---   else
---     fallback()
---   end
--- end
-
-lvim.builtin.cmp.mapping["<Tab>"] = function(fallback)
-  if cmp.visible() then
-    cmp.select_next_item()
-  else
-    local copilot_keys = vim.fn["copilot#Accept"]()
-    if copilot_keys ~= "" then
-      vim.api.nvim_feedkeys(copilot_keys, "i", true)
-    else
-      fallback()
-    end
-  end
-end
-
-lvim.log.level = "warn"
-lvim.format_on_save.enabled = false
--- lvim.colorscheme = "lunar"
-lvim.colorscheme = "habamax"
--- lvim.colorscheme = "evening"
+lvim.log.level = "info"
+lvim.format_on_save = {
+  enabled = true,
+  pattern = "*.lua",
+  timeout = 1000,
+}
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
--- keymappings [view all the defaults by pressing <leader>Lk]
+-- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
-lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
+-- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
+-- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
--- unmap a default keymapping
--- vim.keymap.del("n", "<C-Up>")
--- override a default keymapping
--- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
-
--- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
--- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
--- local _, actions = pcall(require, "telescope.actions")
--- lvim.builtin.telescope.defaults.mappings = {
---   -- for input mode
---   i = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---     ["<C-n>"] = actions.cycle_history_next,
---     ["<C-p>"] = actions.cycle_history_prev,
---   },
---   -- for normal mode
---   n = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---   },
--- }
-
--- Change theme settings
--- lvim.builtin.theme.options.dim_inactive = true
--- lvim.builtin.theme.options.style = "storm"
-
--- Use which-key to add extra bindings with the leader-key prefix
+-- -- Use which-key to add extra bindings with the leader-key prefix
+-- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
--- lvim.builtin.which_key.mappings["t"] = {
---   name = "+Trouble",
---   r = { "<cmd>Trouble lsp_references<cr>", "References" },
---   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
---   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
---   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
---   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
---   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
--- }
 
+-- -- Change theme settings
+-- lvim.colorscheme = "lunar"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -98,51 +34,26 @@ lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
--- if you don't want all the parsers change this to a table of the ones you want
-lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "javascript",
-  "json",
-  "lua",
-  "python",
-  "typescript",
-  "tsx",
-  "css",
-  "rust",
-  "java",
-  "yaml",
-}
+-- Automatically install missing parsers when entering buffer
+lvim.builtin.treesitter.auto_install = true
 
-lvim.builtin.treesitter.ignore_install = { "haskell" }
-lvim.builtin.treesitter.highlight.enable = true
+-- lvim.builtin.treesitter.ignore_install = { "haskell" }
 
--- generic LSP settings
+-- -- always installed on startup, useful for parsers without a strict filetype
+-- lvim.builtin.treesitter.ensure_installed = { "comment", "markdown_inline", "regex" }
 
--- -- make sure server will always be installed even if the server is in skipped_servers list
--- lvim.lsp.installer.setup.ensure_installed = {
---     "sumneko_lua",
---     "jsonls",
--- }
--- -- change UI setting of `LspInstallInfo`
--- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
--- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
--- lvim.lsp.installer.setup.ui.border = "rounded"
--- lvim.lsp.installer.setup.ui.keymaps = {
---     uninstall_server = "d",
---     toggle_server_expand = "o",
--- }
+-- -- generic LSP settings <https://www.lunarvim.org/docs/configuration/language-features/language-servers>
 
--- ---@usage disable automatic installation of servers
+-- --- disable automatic installation of servers
 -- lvim.lsp.installer.setup.automatic_installation = false
 
--- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
--- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
+-- ---configure a server manually. IMPORTANT: Requires `:LvimCacheReset` to take effect
+-- ---see the full default list `:lua =lvim.lsp.automatic_configuration.skipped_servers`
 -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
--- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
+-- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
 -- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
 --   return server ~= "emmet_ls"
@@ -158,44 +69,52 @@ lvim.builtin.treesitter.highlight.enable = true
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
--- -- set a formatter, this will override the language server formatting capabilities (if it exists)
+-- -- linters, formatters and code actions <https://www.lunarvim.org/docs/configuration/language-features/linting-and-formatting>
 -- local formatters = require "lvim.lsp.null-ls.formatters"
 -- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
+--   { command = "stylua" },
 --   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
 --     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+--     extra_args = { "--print-width", "100" },
 --     filetypes = { "typescript", "typescriptreact" },
 --   },
 -- }
-
--- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
 -- linters.setup {
 --   { command = "flake8", filetypes = { "python" } },
 --   {
---     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
 --     command = "shellcheck",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--severity", "warning" },
+--     args = { "--severity", "warning" },
 --   },
+-- }
+-- local code_actions = require "lvim.lsp.null-ls.code_actions"
+-- code_actions.setup {
 --   {
---     command = "codespell",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "javascript", "python" },
+--     exe = "eslint",
+--     filetypes = { "typescript", "typescriptreact" },
 --   },
 -- }
 
--- Additional Plugins
+-- -- Additional Plugins <https://www.lunarvim.org/docs/configuration/plugins/user-plugins>
+-- lvim.plugins = {
+--     {
+--       "folke/trouble.nvim",
+--       cmd = "TroubleToggle",
+--     },
+-- }
+
+-- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "zsh",
+--   callback = function()
+--     -- let treesitter use bash highlight for zsh files as well
+--     require("nvim-treesitter.highlight").attach(0, "bash")
+--   end,
+-- })
+--
 lvim.plugins = {
   -- 预览markdown
-  {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
+  { "ellisonleao/glow.nvim",        config = true, cmd = "Glow" },
   -- {
   --   "npxbr/glow.nvim",
   --   ft = {"markdown"}
@@ -203,11 +122,11 @@ lvim.plugins = {
   -- },
   -- {"olexsmir/gopher.nvim"},
   { "leoluz/nvim-dap-go" },
-  {"Shatur/neovim-session-manager"},
+  { "Shatur/neovim-session-manager" },
   -- { "ray-x/go.nvim"},
   {
     "ray-x/go.nvim",
-    dependencies = {  -- optional packages
+    dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
@@ -215,33 +134,33 @@ lvim.plugins = {
     config = function()
       require("go").setup()
     end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
 
-  {"github/copilot.vim"},
-  { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
-  {'lewis6991/gitsigns.nvim'},
-  {
-    "tpope/vim-fugitive",
-    cmd = {
-      "G",
-      "Git",
-      "Gdiffsplit",
-      "Gread",
-      "Gwrite",
-      "Ggrep",
-      "GMove",
-      "GDelete",
-      "GBrowse",
-      "GRemove",
-      "GRename",
-      "Glgrep",
-      "Gedit"
-    },
-    ft = {"fugitive"}
-  },
+  { "github/copilot.vim" },
+  -- { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  -- { 'lewis6991/gitsigns.nvim' },
+  -- {
+  --   "tpope/vim-fugitive",
+  --   cmd = {
+  --     "G",
+  --     "Git",
+  --     "Gdiffsplit",
+  --     "Gread",
+  --     "Gwrite",
+  --     "Ggrep",
+  --     "GMove",
+  --     "GDelete",
+  --     "GBrowse",
+  --     "GRemove",
+  --     "GRename",
+  --     "Glgrep",
+  --     "Gedit"
+  --   },
+  --   ft = { "fugitive" }
+  -- },
   -- {
   --   "zbirenbaum/copilot.lua",
   --   cmd = "Copilot",
@@ -259,91 +178,10 @@ lvim.plugins = {
   -- },
 }
 
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- vim.api.nvim_create_autocmd("BufEnter", {
---   pattern = { "*.json", "*.jsonc" },
---   -- enable wrap mode for json files only
---   command = "setlocal wrap",
--- })
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "zsh",
---   callback = function()
---     -- let treesitter use bash highlight for zsh files as well
---     require("nvim-treesitter.highlight").attach(0, "bash")
---   end,
--- })
---
---
-------------------------
--- Dap
-------------------------
-local dap_ok, dapgo = pcall(require, "dap-go")
-if not dap_ok then
-  return
-end
+-- 左移和右移标签页
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
-dapgo.setup()
-
-
-------------------------
--- LSP
-------------------------
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "gopls" })
-
-local lsp_manager = require "lvim.lsp.manager"
-lsp_manager.setup("golangci_lint_ls", {
-  on_init = require("lvim.lsp").common_on_init,
-  capabilities = require("lvim.lsp").common_capabilities(),
-})
-
-lsp_manager.setup("gopls", {
-  on_attach = function(client, bufnr)
-    require("lvim.lsp").common_on_attach(client, bufnr)
-    local _, _ = pcall(vim.lsp.codelens.refresh)
-    local map = function(mode, lhs, rhs, desc)
-      if desc then
-        desc = desc
-      end
-
-      vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc, buffer = bufnr, noremap = true })
-    end
-    map("n", "<leader>Ci", "<cmd>GoInstallDeps<Cr>", "Install Go Dependencies")
-    map("n", "<leader>Ct", "<cmd>GoMod tidy<cr>", "Tidy")
-    map("n", "<leader>Ca", "<cmd>GoTestAdd<Cr>", "Add Test")
-    map("n", "<leader>CA", "<cmd>GoTestsAll<Cr>", "Add All Tests")
-    map("n", "<leader>Ce", "<cmd>GoTestsExp<Cr>", "Add Exported Tests")
-    map("n", "<leader>Cg", "<cmd>GoGenerate<Cr>", "Go Generate")
-    map("n", "<leader>Cf", "<cmd>GoGenerate %<Cr>", "Go Generate File")
-    map("n", "<leader>Cc", "<cmd>GoCmt<Cr>", "Generate Comment")
-    map("n", "<leader>DT", "<cmd>lua require('dap-go').debug_test()<cr>", "Debug Test")
-  end,
-  on_init = require("lvim.lsp").common_on_init,
-  capabilities = require("lvim.lsp").common_capabilities(),
-  settings = {
-    gopls = {
-      usePlaceholders = true,
-      gofumpt = true,
-      codelenses = {
-        generate = false,
-        gc_details = true,
-        test = true,
-        tidy = true,
-      },
-    },
-  },
-})
-
--- local status_ok, gopher = pcall(require, "gopher")
--- if not status_ok then
---   return
--- end
-
--- gopher.setup {
---   commands = {
---     go = "go",
---     gomodifytags = "gomodifytags",
---     gotests = "gotests",
---     impl = "impl",
---     iferr = "iferr",
---   },
--- }
+require('go').setup()
+require("go.format").goimport()
